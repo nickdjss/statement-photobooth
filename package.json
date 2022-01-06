@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "googleapis": "^39.2.0",
+    "pi-camera": "^1.6.0",
     "uuid": "^8.3.2"
   }
 }
