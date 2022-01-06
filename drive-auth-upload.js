@@ -10,6 +10,7 @@ const TOKEN_PATH = 'token.json';
  * Create an OAuth2 client with the given credentials, and then execute the given callback function.
  */
 function authorize(credentials, callback, filename) {
+	return new Promise(function(resolve, reject){
   const {client_secret, client_id, redirect_uris} = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
@@ -19,7 +20,9 @@ function authorize(credentials, callback, filename) {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     callback(oAuth2Client, filename);
+	resolve("authorized");
   });
+	});
 }
 
 /**
@@ -56,6 +59,7 @@ function getAccessToken(oAuth2Client, callback) {
 * Describe with given media and metaData and upload it using google.drive.create method()
 */ 
 function uploadFile(auth, filename) {
+	return new Promise(function(resolve, reject){
   const drive = google.drive({version: 'v3', auth});
   const fileMetadata = {
     'name': filename,
@@ -73,11 +77,12 @@ function uploadFile(auth, filename) {
   }, (err, file) => {
     if (err) {
       // Handle error
-      console.error(err);
+      reject(err);
     } else {
-      console.log('File Id: ', file.data.id);
+      resolve('File Id: ', file.data.id);
     }
   });
+	});
 }
 
 module.exports = {uploadFile, authorize}
