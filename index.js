@@ -1,10 +1,9 @@
-const environment = "prod"; //"prod" or "dev";
+const environment = "dev"; //"prod" or "dev";
 const drive = require('./drive-auth-upload.js');
 const fs = require('fs');
 const uuidv4 = require('uuid');
 const PiCamera = require('pi-camera');
 const readline = require('readline');
-
   
 const rl = readline.createInterface({
   input: process.stdin,
@@ -19,9 +18,8 @@ const myCamera = new PiCamera({
   nopreview: true,
 });
 
- const some_function = function(photoFileName, textResponses){
+const upload = function(photoFileName, textResponses){
 	return new Promise(function(resolve, reject){
-  
 		fs.readFile('credentials.json', (err, content) => {
 			if (err) {reject(Error(err))};
 			// Authorize a client with credentials, then call the Google Drive API.
@@ -29,10 +27,10 @@ const myCamera = new PiCamera({
 			//console.log(result);
 			resolve('success');
 			});
-			
 		});
 	});
 };
+
 
   
   
@@ -50,7 +48,7 @@ if(environment == "prod"){
 		let textResponses = [
     'my name is:',name,"my file is: ",photoFileName
   ];
-	some_function(photoFileName, textResponses).then(result => recursiveAsyncReadLine());
+	upload(photoFileName, textResponses).then(result => recursiveAsyncReadLine());
     // Your picture was captured
   })
   .catch((error) => {
@@ -65,17 +63,16 @@ recursiveAsyncReadLine(); //Calling this function again to ask new question
 
 if(environment == "dev"){
 	var recursiveAsyncReadLine = function () {
-	 rl.question('What is your name?', function (name) {
-    if (name == 'exit') //we need some base case, for recursion
-      return rl.close(); //closing RL and returning from function.
-	console.log("taking a photo");
-		let uuid = uuidv4.v4(); 
-		let photoFileName = uuid += ".jpg";
-		let textResponses = [
-    'my name is:',name,"my file is: ",photoFileName
-  ];
-		some_function(photoFileName, textResponses).then(result => recursiveAsyncReadLine());
-  });
+		rl.question('What is your name?', function (name) {
+			if (name == 'exit'){ //we need some base case, for recursion
+				return rl.close(); //closing RL and returning from function.
+			}
+			console.log("taking a photo");
+			let uuid = uuidv4.v4(); 
+			let photoFileName = uuid += ".jpg";
+			let textResponses = ['my name is:',name,"my file is: ",photoFileName];
+			upload(photoFileName, textResponses).then(result => recursiveAsyncReadLine());
+		});
 
 }
 recursiveAsyncReadLine(); //Calling this function again to ask new question
