@@ -1,4 +1,4 @@
-const environment = "dev"; //"prod";
+const environment = "prod"; //"prod" or "dev";
 const drive = require('./drive-auth-upload.js');
 const fs = require('fs');
 const uuidv4 = require('uuid');
@@ -26,7 +26,7 @@ const myCamera = new PiCamera({
 			if (err) {reject(Error(err))};
 			// Authorize a client with credentials, then call the Google Drive API.
 			drive.authorize(JSON.parse(content), drive.uploadFile, photoFileName, textResponses).then(result =>{ 
-			console.log(result);
+			//console.log(result);
 			resolve('success');
 			});
 			

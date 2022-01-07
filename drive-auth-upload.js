@@ -124,7 +124,7 @@ sheets.spreadsheets.values.append({
     // Handle error.
     console.log(err);
   } else {
-    console.log(`${result}`);
+    //console.log(`${result}`);
   }
 });
   
