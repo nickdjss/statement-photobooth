@@ -1,5 +1,6 @@
 const environment = "dev"; //"prod" or "dev";
 const drive = require('./drive-auth-upload.js');
+const display = require('./display.js');
 const fs = require('fs');
 const uuidv4 = require('uuid');
 const PiCamera = require('pi-camera');
@@ -39,8 +40,10 @@ if(environment == "prod"){
 	 rl.question('What is your name?', function (name) {
     if (name == 'exit') //we need some base case, for recursion
       return rl.close(); //closing RL and returning from function.
-	console.log("taking a photo");
-	 myCamera.snap()
+	
+	display.updateText(name);
+	//console.log("taking a photo");
+	 /*myCamera.snap()
   .then((result) => {
     console.log("image taken")
 		let uuid = uuidv4.v4(); 
@@ -55,6 +58,7 @@ if(environment == "prod"){
     console.log(error);
      // Handle your error
   });
+  */
   });
 
 }

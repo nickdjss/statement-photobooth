@@ -1,41 +1,22 @@
-   const epd2in13 = require('epd2in13');
-    const { createCanvas, registerFont } = require('canvas');
+   var i2c = require('i2c-bus'),
+  i2cBus = i2c.openSync(1),
+  oled = require('oled-i2c-bus');
+  var font = require('oled-font-5x7');
 
-    const display = new epd2in13(); // Or potentially call new epd2in13({ RST_PIN: 10, BUSY_PIN: 11 }) if the pins are remapped for any reason
+var opts = {
+  width: 128,
+  height: 32,
+  address: 0x3C
+};
 
-    // Setup the canvases and context here
-    registerFont('./fonts/Montserrat-Medium.ttf', { family: 'Montserrat' });
-    const black = createCanvas(display.width, display.height);
-    const bctx = black.getContext('2d');
-    const red = createCanvas(display.width, display.height);
-    const rctx = red.getContext('2d');
+var oled = new oled(i2cBus, opts);
+oled.turnOnDisplay();
 
-    // Black context here
-    bctx.fillStyle = 'white';
-    bctx.fillRect(0, 0, display.width, display.height);
-    bctx.font = '20px Montserrat';
-    bctx.textBaseline = 'top';
-    bctx.fillStyle = 'black';
-    bctx.fillText('epd2in13 Driver', 5, 5);
+function updateText(String text){
+  oled.clearDisplay();
+// sets cursor to x = 1, y = 1
+oled.setCursor(1, 1);
+oled.writeString(font, 1, 'Cats and dogs are really cool animals, you know.', 1, true);
+}
 
-    // Red context here
-    rctx.fillStyle = 'white';
-    rctx.fillRect(0, 0, display.width, display.height);
-    rctx.fillStyle = 'black';
-    rctx.fillRect(0, 35, 80, 16);
-    rctx.font = '10px Montserrat';
-    rctx.fillStyle = 'white';
-    rctx.fillText('By gaweee', 5, 45);
-
-
-    display.init()
-        .then(() => display.clear())
-        .then(() => Promise.all([display.prepareCanvas(black), display.prepareCanvas(red)]))
-        .then(([blackBuffer, redBuffer]) => display.display(blackBuffer, redBuffer))
-        .then((buffer) => display.wait())
-        .then(() => display.clear())
-        .then(() => display.prepareImageFile('./test.png'))
-        .then((buffer) => display.display(buffer))
-        .then((buffer) => display.wait())
-        .then(() => display.clear())
-        .then(() => display.sleep())
+module.exports = {updateText}
