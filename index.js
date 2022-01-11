@@ -5,6 +5,8 @@ const fs = require('fs');
 const uuidv4 = require('uuid');
 const PiCamera = require('pi-camera');
 const readline = require('readline');
+const keyboard = 'keyboard-handler'
+
   
 const rl = readline.createInterface({
   input: process.stdin,
@@ -36,12 +38,20 @@ const upload = function(photoFileName, textResponses){
   
   
 if(environment == "prod"){
-		var recursiveAsyncReadLine = function () {
-	 rl.question('What is your name?', function (name) {
-    if (name == 'exit') //we need some base case, for recursion
-      return rl.close(); //closing RL and returning from function.
+	let submit = false;
 	
-	display.updateText(name);
+	while(!submit){
+keyboard.keyPressed(e => {
+  console.log(e.which)
+})
+	}
+	//display.updateText("what is your name");
+	let answer = "";
+	
+	
+	//display.updateText(name);
+	 
+	  
 	//console.log("taking a photo");
 	 /*myCamera.snap()
   .then((result) => {
@@ -58,11 +68,11 @@ if(environment == "prod"){
     console.log(error);
      // Handle your error
   });
-  */
   });
+  */
 
-}
-recursiveAsyncReadLine(); //Calling this function again to ask new question
+//}
+///recursiveAsyncReadLine(); //Calling this function again to ask new question
 }
 
 if(environment == "dev"){
