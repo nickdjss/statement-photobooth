@@ -12,11 +12,11 @@ var opts = {
 var oled = new oled(i2cBus, opts);
 oled.turnOnDisplay();
 
-function updateText(String text){
+function updateText(text){
   oled.clearDisplay();
 // sets cursor to x = 1, y = 1
 oled.setCursor(1, 1);
-oled.writeString(font, 1, 'Cats and dogs are really cool animals, you know.', 1, true);
+oled.writeString(font, 1, text, 1, true);
 }
 
 module.exports = {updateText}

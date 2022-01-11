@@ -1,4 +1,4 @@
-const environment = "dev"; //"prod" or "dev";
+const environment = "prod"; //"prod" or "dev";
 const drive = require('./drive-auth-upload.js');
 const display = require('./display.js');
 const fs = require('fs');
