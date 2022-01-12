@@ -46,9 +46,13 @@ function takePhoto(answers){
 		let uuid = uuidv4.v4(); 
 		let photoFileName = uuid += ".jpg";
 		let textResponses = [
-    answers, "my file is: ",photoFileName
+     "my file is: ",photoFileName
   ];
-	upload(photoFileName, textResponses).then(result => recursiveAsyncReadLine());
+  
+  answers.reverse().forEach(e =>{textResponses.unshift(e)});
+  
+  console.log(textResponses);
+	upload(photoFileName, textResponses).then();
     // Your picture was captured
   })
   .catch((error) => {
@@ -75,7 +79,8 @@ gkm.events.on('key.*', function(data){
   if (data == "Comma"){answer += ","; return;}
   if (data == "Quote"){answer += "'"; return;}
   if (data == "Minus"){answer += "-"; console.log(answers); return;}
-  if (data == "Semicolon"){answer += ";"; return;}
+  if (data == "Semicolon"){answer += "-"; console.log(answers); return;}
+  if (data == "Backspace"){answer = answer.slice(0, -1);  display.updateText(answer); return;}
     console.log(data);
   if (data == "Enter"){
     answers[question_index] = answer;
